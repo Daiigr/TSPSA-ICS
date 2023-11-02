@@ -1,9 +1,10 @@
-/* file:   cityManager.c */
+/* file:   IOManager.c */
 /* author: Daniel Grbac Bravo (d.grbac.bravo@student.rug.n) */
 /* date:   Thu Nov 02 2023 */
 
 #include <stdio.h>
 #include <stdlib.h>
+
 typedef struct coordinate{
   int x; /* The x coordinate of the position. */
   int y; /* The y coordinate of the position. */

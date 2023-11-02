@@ -1,11 +1,8 @@
-#ifndef IOMANAGER
-#define IOMANAGER
+#ifndef IOMANAGER_H
+#define IOMANAGER_H
+#include "coordinate.h"
 
-typedef struct coordinate{
-  int x; /* The x coordinate of the position. */
-  int y; /* The y coordinate of the position. */
-} coordinate;
-
-coordinate **readCityCoordinates(int nCities);
-coordinate **GenerateRandomCityCoordinates(int nCities);
+coordinate *readCityCoordinates(int nCities);
+coordinate *GenerateRandomCityCoordinates(int nCities);
+void printCityCoordinates(coordinate **cityCoordinates, int nCities);
 #endif
