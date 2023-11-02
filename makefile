@@ -7,10 +7,12 @@ OBJ = $(patsubst %.c, %.o, $(shell find ./src -name "*.c"))
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 build: $(OBJ)
-	$(CC) -o myprog $^ $(CFLAGS)
+	@echo 'building...'
+	@$(CC) -o TSPSA $^ $(CFLAGS)
 
 run: build
-	./myprog
+	@echo 'running...'
+	./TSPSA
 
 clean:
-	rm -f $(OBJ) myprog
+	@rm -f $(OBJ) TSPSA
