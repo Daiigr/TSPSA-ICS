@@ -3,7 +3,7 @@ The Travelling Salesman Problem (TSP) is the following: Given a collection of n 
 
 
 
-This problem seems simple, but to date nobody has ever developed a truly efficient algorithm to solve this problem exactly. The problem is one of a category called combinatorial optimisation problems, which occur frequently in logistics. In the case of n cities, the number of routes to be checked to be sure to find the optimal solution is $ O(n!) $ , which is prohibitively expensive for quite small n.
+This problem seems simple, but to date nobody has ever developed a truly efficient algorithm to solve this problem exactly. The problem is one of a category called combinatorial optimisation problems, which occur frequently in logistics. In the case of n cities, the number of routes to be checked to be sure to find the optimal solution is $O(n!)$ , which is prohibitively expensive for quite small n.
 
 
 The aim of this project is to write a program that can give an approximate solution efficiently. The algorithm used is unusual because
