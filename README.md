@@ -27,9 +27,9 @@ The above process is called simulated annealing, because it is based on the phys
 
 We simulate this process in this case by assigning each solution with an “energy”. In the case of TSP this would be the total path length. We choose an initial configuration $C_0$ of our n cities, and compute the initial energy $E_0$. We also choose an initial “temperature” $T_0$. We make a new candidate configuration $Ctemp$, and compute its energy $Etemp$. We now select the next configuration $C_1$:
 
-If $Etemp < E_0$ : Ctemp always becomes the new configuration C1.
+If $Etemp < E_0$ : Ctemp always becomes the new configuration $C_1$.
 
-If $Etemp ≥ E_0$ : Ctemp becomes the new configuration C1 with probability
+If $Etemp ≥ E_0$ : Ctemp becomes the new configuration $C_1$ with probability
 
 $P = e\frac{e_0 - Etemp}{kT} $
 
