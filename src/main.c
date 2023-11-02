@@ -10,6 +10,6 @@ Kealan Barry (k.barry@student.rug.nl)
 #define DEBUG 1
 
 int main(int argc, char *argv[]) {
-
+printf("Hello world!\n");
 return 0;
 }
