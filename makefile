@@ -1,30 +1,16 @@
 CC=gcc
 CFLAGS=-I.
+DEPS = $(shell find ./src -name "*.h")
+OBJ = $(patsubst %.c, %.o, $(shell find ./src -name "*.c"))
 
-# change these to set the proper directories where each file should be
-SRCDIR=src
-BUILDDIR=build
-TARGETDIR=bin
+%.o: %.c $(DEPS)
+	$(CC) -c -o $@ $< $(CFLAGS)
 
-_DEPS = main.h
-DEPS = $(patsubst %,$(SRCDIR)/%,$(_DEPS))
+build: $(OBJ)
+	$(CC) -o myprog $^ $(CFLAGS)
 
-_OBJ = main.o 
-OBJ = $(patsubst %,$(BUILDDIR)/%,$(_OBJ))
-
-$(BUILDDIR)/%.o: $(SRCDIR)/%.c $(DEPS)
-    $(CC) -c -o $@ $< $(CFLAGS)
-
-$(TARGETDIR)/main: $(OBJ)
-    $(CC) -o $@ $^ $(CFLAGS)
-
-.PHONY: build
-build: $(TARGETDIR)/main
-
-.PHONY: run
 run: build
-    ./$(TARGETDIR)/main 
+	./myprog
 
-.PHONY: clean
 clean:
-    rm -f $(BUILDDIR)/*.o *~ core $(TARGETDIR)/main
+	rm -f $(OBJ) myprog
