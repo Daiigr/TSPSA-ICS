@@ -4,11 +4,12 @@ author: Daniel Grbac Bravo (d.grbac.bravok@student.rug.nl)
  Kelean Barry (k.barry@student.rug.nl
 */
 /* date:   Thu Nov 02 2023 */
-
+//standard libs
 #include <stdio.h>
 #include <stdlib.h>
-#include "coordinate.h"
 #include <math.h>
+//personal libs
+#include "coordinate.h"
 
 float **computeDistanceMatrix(coordinate *cityCoordinates, int nCities){
   int xDistance = 0;
