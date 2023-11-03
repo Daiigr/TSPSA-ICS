@@ -8,14 +8,14 @@ author: Daniel Grbac Bravo (d.grbac.bravok@student.rug.nl)
 #include <stdio.h>
 #include <stdlib.h>
 #include "coordinate.h"
-#include "math.h"
+#include <math.h>
 
 float **computeDistanceMatrix(coordinate *cityCoordinates, int nCities){
   int xDistance = 0;
   int yDistance = 0;
-  int **distanceMatrix = (int**)malloc(nCities * sizeof(int*));
+  float **distanceMatrix = (float**)malloc(nCities * sizeof(float*));
   for(int i = 0; i < nCities; i++){
-    distanceMatrix[i] = (int*)malloc(nCities * sizeof(int));
+    distanceMatrix[i] = (float*)malloc(nCities * sizeof(float));
     for(int j = 0; j < nCities; j++){
       xDistance = cityCoordinates[i].x - cityCoordinates[j].x;
       yDistance = cityCoordinates[i].y - cityCoordinates[j].y;
