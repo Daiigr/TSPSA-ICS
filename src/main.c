@@ -10,7 +10,7 @@ Kealan Barry (k.barry@student.rug.nl)
 #include "IOManager.h"
 #include "coordinate.h"
 #include "TSP.h"
-#include "path.h"
+#include "Path.h"
 
 #define DEBUG 1
 
