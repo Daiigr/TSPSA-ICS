@@ -9,15 +9,23 @@ Kealan Barry (k.barry@student.rug.nl)
 #include <stdlib.h>
 #include "IOManager.h"
 #include "coordinate.h"
+#include "TSP.h"
+#include "path.h"
 
 #define DEBUG 1
-#define NMAX 100
-
 
 int main(int argc, char *argv[]) {
-int nCities = 10; /**< The number of cities. */
+int nCities =0;
+scanf("%d", &nCities);
 
-coordinate *cityCoordinates = GenerateRandomCityCoordinates(nCities); // Generate random city coordinates.
-printCityCoordinates(&cityCoordinates, nCities); // Print the city coordinates.
+//coordinate *cityCoordinates = readCityCoordinates(nCities); // Generate random city coordinates.
+coordinate *cityCoordinates = generateRandomCityCoordinates(nCities); // Generate random city coordinates.
+
+printCityCoordinates(cityCoordinates, nCities); // Print the city coordinates.
+
+int **DistanceMatrix = computeDistanceMatrix(cityCoordinates, nCities); // Compute the distance matrix.
+printCityDistanceMatrix(DistanceMatrix, nCities); // Print the distance matrix.
+int *randomPath = generateRandomPath(DistanceMatrix, nCities); // Generate a random path.
+printPath(randomPath, nCities); // Print the random path.
 return 0;
 }
