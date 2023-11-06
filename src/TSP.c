@@ -7,21 +7,21 @@ author: Daniel Grbac Bravo (d.grbac.bravok@student.rug.nl)
 //standard libs
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
 //personal libs
 #include "coordinate.h"
 
-float **computeDistanceMatrix(coordinate *cityCoordinates, int nCities){
+
+int **computeSquaredDistanceMatrix(coordinate *cityCoordinates, int nCities){
   int xDistance = 0;
   int yDistance = 0;
-  float **distanceMatrix = (float**)malloc(nCities * sizeof(float*));
+  int **squaredDistanceMatrix = (int**)malloc(nCities * sizeof(int*));
   for(int i = 0; i < nCities; i++){
-    distanceMatrix[i] = (float*)malloc(nCities * sizeof(float));
+    squaredDistanceMatrix[i] = (int*)malloc(nCities * sizeof(int));
     for(int j = 0; j < nCities; j++){
       xDistance = cityCoordinates[i].x - cityCoordinates[j].x;
       yDistance = cityCoordinates[i].y - cityCoordinates[j].y;
-      distanceMatrix[i][j] = sqrt((xDistance * xDistance) + (yDistance * yDistance));
+      squaredDistanceMatrix[i][j] = (xDistance * xDistance) + (yDistance * yDistance );
     }
   }
-  return distanceMatrix;
+  return squaredDistanceMatrix;
 }

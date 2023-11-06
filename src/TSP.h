@@ -2,6 +2,8 @@
 #define TSP_H
 #include "coordinate.h"
 
-int **computeDistanceMatrix(coordinate *cityCoordinates, int nCities);
+float **computeDistanceMatrix(coordinate *cityCoordinates, int nCities);
+int **computeSquaredDistanceMatrix(coordinate *cityCoordinates, int nCities);
+
 
 #endif

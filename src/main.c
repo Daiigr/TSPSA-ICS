@@ -23,9 +23,9 @@ coordinate *cityCoordinates = generateRandomCityCoordinates(nCities); // Generat
 
 printCityCoordinates(cityCoordinates, nCities); // Print the city coordinates.
 
-int **DistanceMatrix = computeDistanceMatrix(cityCoordinates, nCities); // Compute the distance matrix.
-printCityDistanceMatrix(DistanceMatrix, nCities); // Print the distance matrix.
-int *randomPath = generateRandomPath(DistanceMatrix, nCities); // Generate a random path.
+int **squaredDistanceMatrix = computeSquaredDistanceMatrix(cityCoordinates, nCities);
+printCityDistanceMatrix(squaredDistanceMatrix, nCities); // Print the distance matrix.
+int *randomPath = generateRandomPath(squaredDistanceMatrix, nCities); // Generate a random path.
 printPath(randomPath, nCities); // Print the random path.
 return 0;
 }

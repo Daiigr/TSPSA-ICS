@@ -7,27 +7,12 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#define DEBUG 1
+#include "coordinate.h"
+#include "IOManager.h"
+#include "Path.h"
 
-/**
- * Generates a random path of nCities length.
- * 
- * @param DistanceMatrix The distance matrix of the cities.
- * @param nCities The number of cities.
- * 
- * @return A pointer to the generated path.
- */
-int *generateRandomPath(int **DistanceMatrix, int nCities){
-  int *path = (int*)malloc(nCities * sizeof(int));
-  for(int i = 0; i < nCities; i++){
-    path[i] = i;
-  }
-  for(int i = 0; i < nCities; i++){
-    int j = rand() % nCities;
-    int temp = path[i];
-    path[i] = path[j];
-    path[j] = temp;
-  }
-  return path;
-
+coordinate *generateRandomPath(coordinate *cityCoordinates, int nCities){
+ // TODO: implement
+ coordinate *path = (coordinate *) malloc( nCities * sizeof(coordinate));
+ return path;
 }
