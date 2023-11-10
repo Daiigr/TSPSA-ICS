@@ -23,7 +23,7 @@ coordinate *cityCoordinates = generateRandomCityCoordinates(nCities); // Generat
 coordinate *currentPath = generateRandomPath(cityCoordinates, nCities); // Generate random path.
 coordinate *generatedPath = (coordinate *) malloc( nCities * sizeof(coordinate)); // Allocate memory for generated path.
 float *temperature = initializeTemperature(); 
-int currentIteration = 0;
+int currentEpochIteration = 0;
 //termination condition: temperature is close to zero
 while(!shouldTerminate(temperature)){
   // replace current path with new path if new path is better
@@ -32,8 +32,8 @@ while(!shouldTerminate(temperature)){
     currentPath = generatedPath;
   }
   // apply cooling schedule
-  temperature = updateTemperature(temperature, nCities, currentIteration);
-  currentIteration++;
+  temperature = updateTemperature(temperature, nCities, currentEpochIteration);
+  currentEpochIteration++;
 }
 
 return 0;
