@@ -31,10 +31,12 @@ coordinate *readCityCoordinates(int nCities){
  * @param nCities The number of cities to generate coordinates for.
  * @return A pointer to an array of coordinates.
  */
+#include <time.h>
+
 coordinate *generateRandomCityCoordinates(int nCities){
   coordinate *cityCoordinates = (coordinate*)malloc(nCities * sizeof(coordinate));
+  srand(time(NULL)); // seed the random number generator with the current time
   for(int i = 0; i < nCities; i++){
-    //r = ((double) rand() ) /  ((double) RAND_MAX) ; doesn't work for generating random floats 🤷🏻‍♂️
     cityCoordinates[i].x = rand() % 100;
     cityCoordinates[i].y = rand() % 100;
   }
@@ -91,39 +93,44 @@ void printCityCoordinates(coordinate *cityCoordinates, int nCities){
   }
 }
 
-void printCityDistanceMatrix(int **distanceMatrix, int nCities){
-  printTitle("distance matrix:");
-  for(int i = 0; i < nCities; i++){
-    printf("\n");
-    for(int j = 0; j < nCities; j++){
-      printFormatedInt(distanceMatrix[i][j]);
-      printf(" ");
-    }
-    printf("\n");
-  }
-}
 
+/**
+ * Prints the given path of cities with their coordinates.
+ * 
+ * @param path An array of coordinates representing the path.
+ * @param nCities The number of cities in the path.
+ */
 void printPath(coordinate *path, int nCities){
   printTitle("Path:");
+  printf ("[");
   for(int i = 0; i < nCities; i++){
-    printf(" City:%i {x: %s",i,GREEN);
+    printf(" i:%i {x: %s",i,GREEN);
     printf("%d", path[i].x);
     printf("%s", RESET);
     printf(", y: %s", GREEN);
     printf("%d", path[i].y);
-    printf("%s", RESET);
-    printf("}\n");
+    printf("%s}, \n", RESET);
   }
-  printf("\n");
+  printf("]\n");
 }
 
+/**
+ * Prints the epoch, temperature, energy and number of cities.
+ * 
+ * @param epoch The current epoch.
+ * @param temperature The current temperature.
+ * @param energy The current energy.
+ * @param nCities The number of cities.
+ */
 void printEpochGeneration(int epoch, float temperature, float energy, int nCities){
-  printf("[Epoch:%i] ", epoch);
-  printf("CurrentPathEnergy: %s", GREEN);
+  printf("Epoch: %s", RED);
+  printf("%d -> ", epoch);
+  printf("%s", RESET);
+  printf("{E_a: %s", GREEN);
   printf("%f", energy);
   printf("%s", RESET);
-  printf(", Temperature: %s", GREEN);
+  printf(", T_a: %s", GREEN);
   printf("%f", temperature);
-  printf("%s", RESET);
+  printf("%s}", RESET);
   printf("\n");
-} 
+}
