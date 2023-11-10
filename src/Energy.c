@@ -13,7 +13,7 @@ float calculatePathEnergy(coordinate *path, int nCities){
   for (int i = 0; i<nCities; i++) {
     totalDistance += sqrt(((path[i].x-path[i+1].x)*(path[i].x-path[i+1].x)) + ((path[i].y-path[i+1].y)*(path[i].y-path[i+1].y)));
   }  
-  return totalDistance
+  return totalDistance;
 }
 //TODO: implement
 int isEnergyImprovement(coordinate *currentPath, coordinate *newPath, int nCities){
