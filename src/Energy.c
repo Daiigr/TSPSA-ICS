@@ -16,14 +16,14 @@ float calculatePathEnergy(coordinate *path, int nCities){
   return totalDistance;
 }
 //TODO: implement
+float differenceInEnergy(coordinate *currentPath, coordinate *newPath, int nCities) {
+  float diff = calculatePathEnergy(newPath, nCities) - calculatePathEnergy(currentPath, nCities);
+  return diff;
+}
+
 int isEnergyImprovement(coordinate *currentPath, coordinate *newPath, int nCities){
   if (differenceInEnergy(currentPath, newPath, nCities)<0) {
     return 1;
   }
   return 0;
-}
-
-float differenceInEnergy(coordinate *currentPath, coordinate *newPath, int nCities) {
-  float diff = calculatePathEnergy(newPath, nCities) - calculatePathEnergy(currentPath, nCities);
-  return diff;
 }
