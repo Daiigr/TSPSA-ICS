@@ -13,26 +13,27 @@ Kealan Barry (k.barry@student.rug.nl)
 #include "Energy.h"
 #include "Temperature.h"
 
-#define DEBUG 1
-
 int main(int argc, char *argv[]) {
-int nCities =0;
-scanf("%d", &nCities);
-
+int nCities = 20;
 coordinate *cityCoordinates = generateRandomCityCoordinates(nCities); // Generate random city coordinates.
+
+printCityCoordinates(cityCoordinates, nCities); // Print city coordinates.  
+
 coordinate *currentPath = generateRandomPath(cityCoordinates, nCities); // Generate random path.
+
+printPath(currentPath, nCities); // Print path.
 coordinate *generatedPath = (coordinate *) malloc( nCities * sizeof(coordinate)); // Allocate memory for generated path.
-float *temperature = initializeTemperature(); 
+float temperature = initializeTemperature(); 
 int currentEpochIteration = 0;
 //termination condition: temperature is close to zero
 while(!shouldTerminate(temperature)){
   // replace current path with new path if new path is better
-  generatedPath = generatePathPermuation(temperature, currentPath, nCities);
+  generatedPath = generatePathPermuation( temperature, currentPath, nCities);
   if (isEnergyImprovement(currentPath, generatedPath, nCities)){
     currentPath = generatedPath;
   }
   // apply cooling schedule
-  temperature = updateTemperature(temperature, nCities, currentEpochIteration);
+  temperature = updateTemperature(temperature);
   currentEpochIteration++;
 }
 
