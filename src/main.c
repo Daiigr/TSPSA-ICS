@@ -26,9 +26,10 @@ coordinate *generatedPath = (coordinate *) malloc( nCities * sizeof(coordinate))
 float temperature = initializeTemperature(); 
 int currentEpochIteration = 0;
 //termination condition: temperature is close to zero
-while(!shouldTerminate(temperature)){
+while(!shouldTerminate(temperature, currentEpochIteration)){
   // replace current path with new path if new path is better
   generatedPath = generatePathPermuation( temperature, currentPath, nCities);
+  printEpochGeneration(currentEpochIteration, temperature, calculatePathEnergy(currentPath, nCities), nCities);
   if (isEnergyImprovement(currentPath, generatedPath, nCities)){
     currentPath = generatedPath;
   }

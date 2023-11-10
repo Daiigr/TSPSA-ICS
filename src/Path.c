@@ -12,6 +12,14 @@
 #include <math.h>
 
 
+/**
+ * Generates a random path of coordinates using the Fisher-Yates shuffle algorithm.
+ * 
+ * @param cityCoordinates An array of coordinates representing the cities.
+ * @param nCities The number of cities.
+ * 
+ * @return A pointer to an array of coordinates representing the random path.
+ */
 coordinate  *generateRandomPath(coordinate *cityCoordinates, int nCities){
     coordinate *path = (coordinate *) malloc( nCities * sizeof(coordinate));
   // Fisher-Yates shuffle
@@ -24,6 +32,15 @@ coordinate  *generateRandomPath(coordinate *cityCoordinates, int nCities){
  return path;
 }
 
+/**
+ * Generates a new path permutation based on the given temperature and current path.
+ * 
+ * @param temperature The temperature used to calculate the probability of accepting a worse solution.
+ * @param path The current path.
+ * @param nCities The number of cities in the path.
+ * 
+ * @return A new path permutation.
+ */
 coordinate *generatePathPermuation(float  temperature, coordinate *path, int nCities){
   coordinate *newPath = (coordinate *) malloc( nCities * sizeof(coordinate));
   //$P = e\frac{e_0 - Etemp}{kT} $ forula for probability of accepting a worse solution

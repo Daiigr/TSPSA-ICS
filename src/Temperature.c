@@ -13,7 +13,7 @@ float initializeTemperature(){
 }
 
 int shouldTerminate(float temperature, int nIterations){
-  if (temperature == 0) { // If reached desired Temperature
+  if (temperature < 0.001) { // If reached desired Temperature
     return 1;
   }
   if (nIterations == 1000) { // If reached desired number of iterations

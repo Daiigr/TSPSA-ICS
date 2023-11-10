@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "coordinate.h"
+#include "Energy.h"
 //color codes for printing
 #define RED "\033[1;31m"
 #define GREEN "\033[1;32m"
@@ -105,13 +106,24 @@ void printCityDistanceMatrix(int **distanceMatrix, int nCities){
 void printPath(coordinate *path, int nCities){
   printTitle("Path:");
   for(int i = 0; i < nCities; i++){
-    printf("{x: %s", GREEN);
+    printf(" City:%i {x: %s",i,GREEN);
     printf("%d", path[i].x);
     printf("%s", RESET);
     printf(", y: %s", GREEN);
     printf("%d", path[i].y);
     printf("%s", RESET);
-    printf("} ->");
+    printf("}\n");
   }
   printf("\n");
 }
+
+void printEpochGeneration(int epoch, float temperature, float energy, int nCities){
+  printf("[Epoch:%i] ", epoch);
+  printf("CurrentPathEnergy: %s", GREEN);
+  printf("%f", energy);
+  printf("%s", RESET);
+  printf(", Temperature: %s", GREEN);
+  printf("%f", temperature);
+  printf("%s", RESET);
+  printf("\n");
+} 
