@@ -1,11 +1,26 @@
+/**
+ * @file Energy.c
+ * @author Kealan Barry( k.barry@student.rug.nl)
+  * @brief this file contains the functions for the energy of the simulated annealing algorithm
+ * @version 1.0
+ * @date 2023-11-10
+ */
+
+// defult libraries 
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <time.h>
+
+// our custom libraries
+#include "IOManager.h"
 #include "coordinate.h"
+#include "Path.h"
+#include "Energy.h"
+#include "Temperature.h"
 
 /**
- * Calculates the total energy of a given path through a set of cities.
- * 
+ * Calculates the total energy of a given path through a set of cities. 
  * @param path An array of coordinates representing the path through the cities.
  * @param nCities The number of cities in the path.
  * @return The total energy required to traverse the path.

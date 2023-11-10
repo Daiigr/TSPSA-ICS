@@ -1,20 +1,27 @@
-/* file:   main.c */
-/* authors: 
-Daniel Grbac Bravo (d.grbac.bravo@student.rug.n) 
-Kealan Barry (k.barry@student.rug.nl)
-*/
-/* date:   Thu Nov 02 2023 */
+/**
+ * @file Main.c
+ * @authors Daniel Grbac Bravo (d.grbac.bravo@student.rug.nl) Kealan Barry( k.barry@student.rug.nl)
+  * @brief this file contains the functions for the energy of the simulated annealing algorithm
+ * @version 1.0
+ * @date 2023-11-10
+ */
 
+
+// defult libraries 
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
+#include <time.h>
+
+// our custom libraries
 #include "IOManager.h"
 #include "coordinate.h"
 #include "Path.h"
 #include "Energy.h"
 #include "Temperature.h"
-#include <math.h>
-#include <time.h>
+
 int main(int argc, char *argv[]) {
+// get number of cities from user
 int nCities = 0;
 scanf("%d", &nCities);
 coordinate *cityCoordinates = generateRandomCityCoordinates(nCities); // Generate random city coordinates.

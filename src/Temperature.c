@@ -1,5 +1,22 @@
+/**
+ * @file Temperature.c
+ * @author Kealan Barry( k.barry@student.rug.nl)
+ * @brief this file contains the functions for the temperature of the simulated annealing algorithm 
+ * @version 1.0
+ * @date 2023-11-10
+ */
+// defult libraries 
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
+#include <time.h>
+
+// our custom libraries
+#include "IOManager.h"
+#include "coordinate.h"
+#include "Path.h"
+#include "Energy.h"
+#include "Temperature.h"
 
 
 float updateTemperature(float currentTemperature){

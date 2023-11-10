@@ -1,17 +1,23 @@
-/* file:   Path.c */
-/* author: Daniel Grbac Bravo (d.grbac.bravok@student.rug.n) */
-/* date:   Fri Nov 03 2023 */
+/**
+ * @file Path.c
+ * @author Daniel Grbac Bravo (d.grbac.bravo@student.rug.nl) 
+ * @brief this file contains the functions for the energy of the simulated annealing algorithm
+ * @version 1.0
+ * @date 2023-11-10
+ */
 
+// defult libraries 
 #include <stdio.h>
 #include <stdlib.h>
-#include "coordinate.h"
-#include "IOManager.h"
-#include "Path.h"
-#include "Energy.h"
-#include "Temperature.h"
 #include <math.h>
 #include <time.h>
 
+// our custom libraries
+#include "IOManager.h"
+#include "coordinate.h"
+#include "Path.h"
+#include "Energy.h"
+#include "Temperature.h"
 
 /**
  * Generates a random path of coordinates using the Fisher-Yates shuffle algorithm.

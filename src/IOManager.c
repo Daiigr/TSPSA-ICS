@@ -1,15 +1,30 @@
-/* file:   IOManager.c */
-/* author: Daniel Grbac Bravo (d.grbac.bravo@student.rug.n) */
-/* date:   Thu Nov 02 2023 */
+/**
+ * @file IOManager.c
+ * @author Daniel Grbac Bravo (d.grbac.bravo@student.rug.nl)
+  * @brief this file contains the functions for the input and output of the simulated annealing algorithm
+ * @version 1.0
+ * @date 2023-11-10
+ */
 
+// defult libraries 
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
+#include <time.h>
+
+// our custom libraries
+#include "IOManager.h"
 #include "coordinate.h"
+#include "Path.h"
 #include "Energy.h"
+#include "Temperature.h"
+
 //color codes for printing
 #define RED "\033[1;31m"
 #define GREEN "\033[1;32m"
 #define RESET "\033[0m"
+
+// input functions
 
 /**
  * Reads the coordinates of nCities cities from standard input and returns an array of coordinate pointers.
@@ -43,9 +58,7 @@ coordinate *generateRandomCityCoordinates(int nCities){
   return cityCoordinates;
 }
 
-//--------------------------------------------------------------------------------------------
-// printing functions
-//--------------------------------------------------------------------------------------------
+// output functions
 
 /**
  * Prints a title in red.
