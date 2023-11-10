@@ -20,11 +20,20 @@ int nCities =0;
 scanf("%d", &nCities);
 
 coordinate *cityCoordinates = generateRandomCityCoordinates(nCities); // Generate random city coordinates.
-coordinate *path = generateRandomPath(cityCoordinates, nCities); // Generate random path.
+coordinate *currentPath = generateRandomPath(cityCoordinates, nCities); // Generate random path.
+coordinate *generatedPath = (coordinate *) malloc( nCities * sizeof(coordinate)); // Allocate memory for generated path.
 float *temperature = initializeTemperature(); 
 int currentIteration = 0;
-while(isTemperatureAboveZero(temperature)){
-  path = generatePathPermuation(temperature, path, nCities);
+//termination condition: temperature is close to zero
+while(!shouldTerminate(temperature)){
+  // replace current path with new path if new path is better
+
+// we also need to abstract this so that we satify the assignment requirements
+  generatedPath = generatePathPermuation(temperature, currentPath, nCities);
+  if (calculatePathEnergy(generatedPath, nCities) < calculatePathEnergy(currentPath, nCities)){
+    currentPath = generatedPath;
+  }
+  // apply cooling schedule
   temperature = updateTemperature(temperature, nCities, currentIteration);
   currentIteration++;
 }
