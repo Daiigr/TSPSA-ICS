@@ -9,8 +9,9 @@ Kealan Barry (k.barry@student.rug.nl)
 #include <stdlib.h>
 #include "IOManager.h"
 #include "coordinate.h"
-#include "TSP.h"
 #include "Path.h"
+#include "Energy.h"
+#include "Temperature.h"
 
 #define DEBUG 1
 
@@ -18,14 +19,15 @@ int main(int argc, char *argv[]) {
 int nCities =0;
 scanf("%d", &nCities);
 
-//coordinate *cityCoordinates = readCityCoordinates(nCities); // Generate random city coordinates.
 coordinate *cityCoordinates = generateRandomCityCoordinates(nCities); // Generate random city coordinates.
+coordinate *path = generateRandomPath(cityCoordinates, nCities); // Generate random path.
+float *temperature = initializeTemperature(); 
+int currentIteration = 0;
+while(isTemperatureAboveZero(temperature)){
+  path = generatePathPermuation(temperature, path, nCities);
+  temperature = updateTemperature(temperature, nCities, currentIteration);
+  currentIteration++;
+}
 
-printCityCoordinates(cityCoordinates, nCities); // Print the city coordinates.
-
-int **squaredDistanceMatrix = computeSquaredDistanceMatrix(cityCoordinates, nCities);
-printCityDistanceMatrix(squaredDistanceMatrix, nCities); // Print the distance matrix.
-int *randomPath = generateRandomPath(squaredDistanceMatrix, nCities); // Generate a random path.
-printPath(randomPath, nCities); // Print the random path.
 return 0;
 }
