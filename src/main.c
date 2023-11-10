@@ -27,10 +27,8 @@ int currentIteration = 0;
 //termination condition: temperature is close to zero
 while(!shouldTerminate(temperature)){
   // replace current path with new path if new path is better
-
-// we also need to abstract this so that we satify the assignment requirements
   generatedPath = generatePathPermuation(temperature, currentPath, nCities);
-  if (calculatePathEnergy(generatedPath, nCities) < calculatePathEnergy(currentPath, nCities)){
+  if (isEnergyImprovement(currentPath, generatedPath, nCities)){
     currentPath = generatedPath;
   }
   // apply cooling schedule

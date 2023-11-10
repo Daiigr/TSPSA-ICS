@@ -4,14 +4,15 @@
 
 //TODO: implement
 float *updateTemperature(float currentTemperature, int nCities, int nIterations){
-
+  return 0;
 }
 
+//TODO: implement
 float *initializeTemperature(){
-  float *temperature = (float *) malloc( 100 * sizeof(float));
+  float *temperature = (float *) malloc(sizeof(float));
   return temperature;
 }
-
-int shouldTerminate(float *temperature){
+//TODO: implement
+int shouldTerminate(float *temperature, int nIterations){
   return 0;
 }

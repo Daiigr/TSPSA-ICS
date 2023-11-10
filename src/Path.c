@@ -11,8 +11,14 @@
 #include "IOManager.h"
 #include "Path.h"
 
-coordinate *generateRandomPath(coordinate *cityCoordinates, int nCities){
  // TODO: implement
+coordinate *generateRandomPath(coordinate *cityCoordinates, int nCities){
  coordinate *path = (coordinate *) malloc( nCities * sizeof(coordinate));
  return path;
+}
+
+// TODO: implement
+coordinate *generatePathPermuation(float *temperature, coordinate *path, int nCities){
+  coordinate *newPath = (coordinate *) malloc( nCities * sizeof(coordinate));
+  return newPath;
 }
