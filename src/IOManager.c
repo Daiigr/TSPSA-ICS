@@ -102,13 +102,16 @@ void printCityDistanceMatrix(int **distanceMatrix, int nCities){
   }
 }
 
-void printPath(int *path, int nCities){
+void printPath(coordinate *path, int nCities){
   printTitle("Path:");
   for(int i = 0; i < nCities; i++){
-    printf("%s", GREEN);
-    printf("%d", path[i]);
+    printf("{x: %s", GREEN);
+    printf("%d", path[i].x);
     printf("%s", RESET);
-    printf(" ");
+    printf(", y: %s", GREEN);
+    printf("%d", path[i].y);
+    printf("%s", RESET);
+    printf("} ->");
   }
   printf("\n");
 }

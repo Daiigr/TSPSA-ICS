@@ -2,5 +2,5 @@
 #define TEMPERATURE_H
 float initializeTemperature();
 float updateTemperature(float currentTemperature);
-int shouldTerminate(float *temperature);
+int shouldTerminate(float  temperature);
 #endif
