@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-I.
+CFLAGS=-lm
 DEPS = $(shell find ./src -name "*.h")
 OBJ = $(patsubst %.c, %.o, $(shell find ./src -name "*.c"))
 
