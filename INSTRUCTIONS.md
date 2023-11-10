@@ -31,7 +31,7 @@ If $Etemp < E_0$ : Ctemp always becomes the new configuration $C_1$.
 
 If $Etemp ≥ E_0$ : Ctemp becomes the new configuration $C_1$ with probability
 
-$P = e\frac{e_0 - Etemp}{kT} $
+$P = e^\frac{e_0 - Etemp}{kT} $
 
 with $k$ a constant; otherwise $C_1 = C_0$.
 

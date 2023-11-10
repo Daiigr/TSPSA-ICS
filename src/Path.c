@@ -10,6 +10,7 @@
 #include "Energy.h"
 #include "Temperature.h"
 #include <math.h>
+#include <time.h>
 
 
 /**
@@ -32,55 +33,30 @@ coordinate  *generateRandomPath(coordinate *cityCoordinates, int nCities){
  return path;
 }
 
-/**
- * Generates a new path permutation based on the given temperature and current path.
- * 
- * @param temperature The temperature used to calculate the probability of accepting a worse solution.
- * @param path The current path.
- * @param nCities The number of cities in the path.
- * 
- * @return A new path permutation.
- */
-coordinate *generatePathPermuation(float  temperature, coordinate *path, int nCities){
+
+coordinate *generatePathPermuation(coordinate *path, int nCities){
   coordinate *newPath = (coordinate *) malloc( nCities * sizeof(coordinate));
-  //$P = e\frac{e_0 - Etemp}{kT} $ forula for probability of accepting a worse solution
-  // if (Etemp < e0) then P = 1
-  // if (Etemp > e0) then P = e^(-Etemp/kT)
-  // if (Etemp >> e0) then P = 0
-  // if (Etemp == e0) then P = 0.5  
-  // if (Etemp == 0) then P = 0 
+ // note that there must be only one of each city in the path at any time
+ // so they need to be shuffled in a way that ensures this
 
- // code 
-  // 1. generate a new path
-  float Etemp = calculatePathEnergy(path, nCities);
-  float Enew = 0;
-  int i = 0;
-  while (i < nCities){
-    int randomIndex = rand() % nCities;
-    newPath[i] = path[randomIndex];
-    i++;
+// the way we do this is by swapping two cities in th path at random 
+
+// we do this by generating two random indices and swapping the cities at those indices
+
+// we do this nCities times to ensure that each city is swapped at least once
+  for (int i = 0; i<nCities; i++) {
+    newPath[i] = path[i];
   }
-
-  // 2. calculate the energy of the new path
-  Enew = calculatePathEnergy(newPath, nCities);
-  
-  // 3. with some probability, replace the current path with the new path
-
-  // if (Etemp < Enew) then P = 1
-  // if (Etemp > Enew) then P = e^(-Etemp/kT)
-  // if (Etemp >> Enew) then P = 0
-  // if (Etemp == Enew) then P = 0.5
-  // if (Etemp == 0) then P = 0
-
-  float P = 0;
-  if (Etemp < Enew){
-    P = 1;
-  } else if (Etemp > Enew){
-    P = exp(-Etemp/temperature);
-  } else if (Etemp == Enew){
-    P = 0.5;
-  } else if (Etemp == 0){
-    P = 0;
+// random seed 
+  time_t t;
+   /* Intializes random number generator */
+   srand((unsigned) time(&t));
+  for (int i = 0; i<nCities; i++) {
+    int randomIndex1 = rand() % nCities;
+    int randomIndex2 = rand() % nCities;
+    coordinate temp = newPath[randomIndex1];
+    newPath[randomIndex1] = newPath[randomIndex2];
+    newPath[randomIndex2] = temp;
   }
 
   return newPath;
