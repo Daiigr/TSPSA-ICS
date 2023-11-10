@@ -3,16 +3,21 @@
 
 
 //TODO: implement
-float *updateTemperature(float currentTemperature, int nCities, int nIterations){
-  return 0;
+float updateTemperature(float currentTemperature){
+
+  currentTemperature = currentTemperature*0.99;
+
+  return currentTemperature;
 }
 
 //TODO: implement
-float *initializeTemperature(){
-  float *temperature = (float *) malloc(sizeof(float));
+float initializeTemperature(){
+  float temperature = 1.00; // Start with an initial temperature of 1
   return temperature;
 }
 //TODO: implement
-int shouldTerminate(float *temperature, int nIterations){
-  return 0;
+int shouldTerminate(float temperature, int nIterations){
+  if (temperature == 0) { // If reached desired Temperature
+    return 0;
+  }
 }
