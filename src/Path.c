@@ -20,6 +20,77 @@
 #include "Temperature.h"
 
 /**
+ * Swaps two cities on a given path randomly.
+ * 
+ * @param path The path to swap cities on.
+ * @param nCities The number of cities in the path.
+ * @return A new path with two cities swapped.
+ */
+coordinate *swapTwoCitiesOnPath(coordinate *path, int nCities){
+  coordinate *newPath = (coordinate *) malloc( nCities * sizeof(coordinate));
+  for (int i = 0; i<nCities; i++) {
+    newPath[i] = path[i];
+  }
+  int randomIndex1 = rand() % nCities;
+  int randomIndex2 = rand() % nCities;
+  coordinate temp = newPath[randomIndex1];
+  newPath[randomIndex1] = newPath[randomIndex2];
+  newPath[randomIndex2] = temp;
+  return newPath;
+}
+
+/**
+ * Inverts the order of an arbitrary section of the given path array.
+ * 
+ * @param path The array of coordinates representing the path.
+ * @param nCities The number of cities in the path.
+ * @return A new array of coordinates with the section inverted.
+ */
+coordinate *InvertRandomSectionOnPath(coordinate *path, int nCities){
+  coordinate *newPath = (coordinate *) malloc( nCities * sizeof(coordinate));
+  for (int i = 0; i<nCities; i++) {
+    newPath[i] = path[i];
+  }
+  int randomIndex1 = rand() % nCities;
+  int randomIndex2 = rand() % nCities;
+  if (randomIndex1 > randomIndex2) {
+    int temp = randomIndex1;
+    randomIndex1 = randomIndex2;
+    randomIndex2 = temp;
+  }
+  for (int i = randomIndex1; i < randomIndex2; i++) {
+    coordinate temp = newPath[i];
+    newPath[i] = newPath[randomIndex2];
+    newPath[randomIndex2] = temp;
+    randomIndex2--;
+  }
+  return newPath;
+}
+
+/**
+ * Performs a circular shift on a given path by moving everything up (or down) the array by one place, 
+ * and moving the last (or first) to the first (or last) position.
+ * 
+ * @param path The path to perform the circular shift on.
+ * @param nCities The number of cities in the path.
+ * @return A new path with the circular shift performed.
+ */
+coordinate *doCircularShiftOnPath(coordinate *path, int nCities){
+  coordinate *shiftedPath = (coordinate *) malloc( nCities * sizeof(coordinate));
+  for (int i = 0; i<nCities; i++) {
+    shiftedPath[i] = path[i];
+  }
+
+  coordinate temp = shiftedPath[0];
+  for (int i = 0; i < nCities - 1; i++) {
+    shiftedPath[i] = shiftedPath[i+1];
+  }
+  shiftedPath[nCities - 1] = temp;
+  return shiftedPath;
+
+}
+
+/**
  * Generates a random path of coordinates using the Fisher-Yates shuffle algorithm.
  * 
  * @param cityCoordinates An array of coordinates representing the cities.
@@ -42,25 +113,17 @@ coordinate  *generateRandomPath(coordinate *cityCoordinates, int nCities){
 
 coordinate *generatePathPermuation(coordinate *path, int nCities){
   coordinate *newPath = (coordinate *) malloc( nCities * sizeof(coordinate));
- // note that there must be only one of each city in the path at any time
- // so they need to be shuffled in a way that ensures this
+  // randomly pick one of the 3 different types of path permutations
 
-// the way we do this is by swapping two cities in th path at random 
-
-// we do this by generating two random indices and swapping the cities at those indices
-
-// we do this nCities times to ensure that each city is swapped at least once
-  for (int i = 0; i<nCities; i++) {
-    newPath[i] = path[i];
+  int randomIndex = rand() % 3;
+  if (randomIndex == 0) {
+    newPath = swapTwoCitiesOnPath(path, nCities);
   }
-
-  for (int i = 0; i<nCities; i++) {
-    int randomIndex1 = rand() % nCities;
-    int randomIndex2 = rand() % nCities;
-    coordinate temp = newPath[randomIndex1];
-    newPath[randomIndex1] = newPath[randomIndex2];
-    newPath[randomIndex2] = temp;
+  else if (randomIndex == 1) {
+    newPath = InvertRandomSectionOnPath(path, nCities);
   }
-
+  else {
+    newPath = doCircularShiftOnPath(path, nCities);
+  }
   return newPath;
 }

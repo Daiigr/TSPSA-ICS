@@ -26,6 +26,8 @@
 
 // input functions
 
+
+
 /**
  * Reads the coordinates of nCities cities from standard input and returns an array of coordinate pointers.
  * 
@@ -116,15 +118,15 @@ void printPath(coordinate *path, int nCities){
     printf("Path is too long to print.\n");
     return;
   }
-  printf("Final Path: ");
+  printTitle("Path Coordinates");
   printf ("[");
   for(int i = 0; i < nCities; i++){
-    printf(" i:%i {x: %s",i,GREEN);
+    printf("{x: %s",GREEN);
     printf("%d", path[i].x);
     printf("%s", RESET);
     printf(", y: %s", GREEN);
     printf("%d", path[i].y);
-    printf("%s},", RESET);
+    printf("%s} -> \n", RESET);
   }
   printf("]\n");
 }
@@ -174,10 +176,8 @@ void printTerminationConditions(float temperature, int epoch, int Energy, int nC
  * @param nCities The number of cities to read coordinates for.
  * @return A pointer to an array of coordinates.
  */
-coordinate *readCityCoordinatesFromFile(int nCities){
+coordinate *readCityCoordinatesFromFile(int nCities, FILE *fptr){
   coordinate *cityCoordinates = (coordinate*)malloc(nCities * sizeof(coordinate));
-  FILE *fptr;
-  fptr = fopen("a.in", "r");
   for(int i = 0; i < nCities; i++){
     fscanf(fptr, "%d %d", &cityCoordinates[i].x, &cityCoordinates[i].y);
   }
@@ -215,7 +215,18 @@ void savePathToFile(coordinate *path, int nCities){
   fptr = fopen("path.csv", "a"); // append mode 
   // write the epoch, energy and temperature to the file 
   for(int i = 0; i < nCities; i++){
-    fprintf(fptr, "{x:%d, y:%d},", path[i].x, path[i].y);
+    fprintf(fptr, "%d,%d\n", path[i].x, path[i].y);
+  }
+  fprintf(fptr, "\n");
+  fclose(fptr);
+}
+
+void saveFinalPathToFile(coordinate *path, int nCities){
+  FILE *fptr;
+  fptr = fopen("final.csv", "w"); // write mode 
+  // write the epoch, energy and temperature to the file 
+  for(int i = 0; i < nCities; i++){
+    fprintf(fptr, "%d,%d\n", path[i].x, path[i].y);
   }
   fprintf(fptr, "\n");
   fclose(fptr);

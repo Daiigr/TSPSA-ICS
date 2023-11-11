@@ -24,10 +24,11 @@ void printTerminationConditions(float temperature, int epoch, int Energy, int nC
 
 // input functions from file
 
-coordinate *readCityCoordinatesFromFile(int nCities);
+coordinate *readCityCoordinatesFromFile(int nCities, FILE *fp);
 
 // output functions to file
 
 void saveEpochToFile(int epoch, float energy, float temperature);
 void savePathToFile(coordinate *path, int nCities);
+void saveFinalPathToFile(coordinate *path, int nCities);
 #endif

@@ -12,6 +12,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <time.h>
+#include <string.h>
 
 // our custom libraries
 #include "IOManager.h"
@@ -23,33 +24,51 @@
 //macros
 
 #define DEBUG 0
-// read from command line arguments if debug is enabled and if random or read mode is enabled
 int main(int argc, char *argv[]){
   int nCities = 0;
-  scanf("%d", &nCities);
   coordinate *cityCoordinates;
   coordinate *currentPath; 
   coordinate *generatedPath;
-  if (argc > 1) {
-    if (argv[1][0] == 'f' || argv[1][0] == 'F') {
-      printf("Reading from file.\n");
-      cityCoordinates = readCityCoordinatesFromFile(nCities);
-    } else if (argv[1][0] == 'r' || argv[1][0] == 'R') {
+  float temperature = 1000.00; // Start with an initial temperature of 1000;
+
+  // read from command line arguments 
+
+for (int i = 1; i < argc; i++) {
+  // checks if any arguments are provided for input of N
+    if (strcmp(argv[i], "-n") == 0 || strcmp(argv[i], "-N") == 0) {
+      nCities = atoi(argv[i+1]);
+      printf("Number of cities: %d\n", nCities);
+    }
+  // checks if any arguments are provided for input of Temperature
+    if(strcmp(argv[i], "-t") == 0 || strcmp(argv[i], "-T") == 0){
+      if (argv[i+1] != NULL) {
+        printf("Temperature: %f\n", atof(argv[i+1]));
+        temperature = atof(argv[i+1]);   
+      }
+    }
+    if(strcmp(argv[i], "-file") == 0 || strcmp(argv[i], "-FILE") == 0){
+      FILE *fp; // file pointer
+      fp = fopen(argv[i+1], "r"); // open file for reading
+      if (fp == NULL) {
+        printf("Error opening file.\n");
+        exit(1);
+      }
+      printf("Reading coordinates from file.\n");
+      cityCoordinates = readCityCoordinatesFromFile(nCities, fp);
+    }
+
+    if(strcmp(argv[i], "-random") == 0 || strcmp(argv[i], "-RANDOM") == 0){
       printf("Generating random coordinates.\n");
       cityCoordinates = generateRandomCityCoordinates(nCities);
-    } else {
-      printf("Invalid argument. Please use either 'f' or 'r'.\n");
-      return 1;
     }
-  
   }
+
 // get number of cities from user
 currentPath = generateRandomPath(cityCoordinates, nCities); // Generate random path.
 generatedPath = (coordinate *) malloc( nCities * sizeof(coordinate)); // Allocate memory for generated path.
 time_t t;
 srand((unsigned) time(&t));
 float generatedPathEnergy = 0;
-float temperature = initializeTemperature(); 
 int currentEpochIteration = 0;
 
 #if DEBUG == 1
@@ -88,7 +107,6 @@ while(!shouldTerminate(temperature, currentEpochIteration)){
         printf("Rejected.\n");
       #endif
     }
- 
   }
 
   // print Epoch information 
@@ -103,6 +121,7 @@ while(!shouldTerminate(temperature, currentEpochIteration)){
   temperature = updateTemperature(temperature);
   currentEpochIteration++;
 }
+saveFinalPathToFile(currentPath, nCities);
 printTerminationConditions(temperature, currentEpochIteration, calculatePathEnergy(currentPath, nCities), nCities);
 return 0;
 }
