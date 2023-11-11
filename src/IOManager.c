@@ -152,8 +152,6 @@ void printEpochGeneration(int epoch, float temperature, float energy, int nCitie
 
 void printTerminationConditions(float temperature, int epoch, int Energy, int nCities){
   printf("Termination conditions Reached.\n");
-  printf("Path Iterations Saved to path.csv ...\n ");
-  printf("Epoch Data Saved to data.csv ...\n");
   printTitle("Termination Statistics");
   printf("Final Energy: %s", RED);
   printf("%d", Energy);
