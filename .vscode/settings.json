@@ -1,6 +1,7 @@
 {
   "files.associations": {
     "math.h": "c",
-    "iomanager.h": "c"
+    "iomanager.h": "c",
+    "energy.h": "c"
   }
 }

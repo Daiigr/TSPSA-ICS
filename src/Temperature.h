@@ -8,6 +8,6 @@
 #ifndef TEMPERATURE_H 
 #define TEMPERATURE_H
 float initializeTemperature();
-float updateTemperature(float currentTemperature);
+float updateTemperature(float currentTemperature, float coolingRate);
 int shouldTerminate(float  temperature, int nIterations);
 #endif

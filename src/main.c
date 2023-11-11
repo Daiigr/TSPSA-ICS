@@ -29,7 +29,8 @@ int main(int argc, char *argv[]){
   coordinate *cityCoordinates;
   coordinate *currentPath; 
   coordinate *generatedPath;
-  float temperature = 1000.00; // Start with an initial temperature of 1000;
+  float temperature = 1000.00; // 1000 by default
+  float coolingRate = 0.995; // cooling rate of 0.995 by default
 
   // read from command line arguments 
 
@@ -46,6 +47,16 @@ for (int i = 1; i < argc; i++) {
         temperature = atof(argv[i+1]);   
       }
     }
+    // cooling rate 
+    if(strcmp(argv[i], "-c") == 0 || strcmp(argv[i], "-C") == 0){
+      if (argv[i+1] != NULL) {
+        printf("Cooling rate: %f\n", atof(argv[i+1]));
+        coolingRate = atof(argv[i+1]);   
+      }
+    }
+
+
+
     if(strcmp(argv[i], "-file") == 0 || strcmp(argv[i], "-FILE") == 0){
       FILE *fp; // file pointer
       fp = fopen(argv[i+1], "r"); // open file for reading
@@ -118,7 +129,7 @@ while(!shouldTerminate(temperature, currentEpochIteration)){
   // save path to file
   savePathToFile(currentPath, nCities);
   // apply cooling schedule
-  temperature = updateTemperature(temperature);
+  temperature = updateTemperature(temperature, coolingRate);
   currentEpochIteration++;
 }
 saveFinalPathToFile(currentPath, nCities);

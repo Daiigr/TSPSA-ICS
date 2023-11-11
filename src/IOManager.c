@@ -231,3 +231,14 @@ void saveFinalPathToFile(coordinate *path, int nCities){
   fprintf(fptr, "\n");
   fclose(fptr);
 }
+
+void saveCoordinatesToFile(coordinate *cityCoordinates, int nCities){
+  FILE *fptr;
+  fptr = fopen("coordinates.csv", "w"); // write mode 
+  // write the epoch, energy and temperature to the file 
+  for(int i = 0; i < nCities; i++){
+    fprintf(fptr, "%d,%d\n", cityCoordinates[i].x, cityCoordinates[i].y);
+  }
+  fprintf(fptr, "\n");
+  fclose(fptr);
+}

@@ -19,7 +19,7 @@
 #include "Temperature.h"
 
 
-float updateTemperature(float currentTemperature){
+float updateTemperature(float currentTemperature, float coolingRate){
   currentTemperature = currentTemperature*0.995;
   return currentTemperature;
 }
