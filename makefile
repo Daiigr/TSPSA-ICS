@@ -13,7 +13,7 @@ build: $(OBJ)
 
 run: build
 	@echo 'running...'
-	./TSPSA
+	./TSPSA $(ARGS)
 
 clean:
 	@rm -f $(OBJ) TSPSA

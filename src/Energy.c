@@ -19,6 +19,9 @@
 #include "Energy.h"
 #include "Temperature.h"
 
+#define CONSTANT  100
+#define e 2.71828
+
 /**
  * Calculates the total energy of a given path through a set of cities. 
  * @param path An array of coordinates representing the path through the cities.
@@ -56,6 +59,24 @@ float differenceInEnergy(coordinate *currentPath, coordinate *newPath, int nCiti
 int isEnergyImprovement(coordinate *currentPath, coordinate *newPath, int nCities){
   // check if new path is better
   if (differenceInEnergy(currentPath, newPath, nCities)<0) {
+    return 1;
+  }
+  return 0;
+}
+
+
+/**
+ * Calculates the probability of accepting a new solution based on the difference in energy and temperature.
+ * Uses the Boltzmann constant to calculate the probability.
+ * 
+ * @param differenceInEnergy The difference in energy between the current solution and the new solution.
+ * @param temperature The current temperature of the system.
+ * @return 1 if the new solution should be accepted, 0 otherwise.
+ */
+int generateProbability(float differenceInEnergy, float temperature){
+  float probability = exp(-differenceInEnergy / (CONSTANT * temperature));
+  float random = (float)rand() / (float)(RAND_MAX);
+  if (random < probability) {  // here's a small fix as well
     return 1;
   }
   return 0;

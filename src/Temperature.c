@@ -25,7 +25,7 @@ float updateTemperature(float currentTemperature){
 }
 
 float initializeTemperature(){
-  float temperature = 1.00; // Start with an initial temperature of 1
+  float temperature = 100.00; // Start with an initial temperature of 1
   return temperature;
 }
 

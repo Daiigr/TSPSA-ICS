@@ -12,8 +12,12 @@
 
 coordinate *readCityCoordinates(int nCities);
 coordinate *generateRandomCityCoordinates(int nCities);
+
 void printCityCoordinates(coordinate  *cityCoordinates, int nCities);
 void printCityDistanceMatrix(int  **distanceMatrix, int nCities);
 void printPath(coordinate *path, int nCities);
 void printEpochGeneration(int epoch, float temperature, float energy, int nCities);
+void printTerminationConditions(float temperature, int epoch, int Energy, int nCities);
+void saveEpochToFile(int epoch, float energy, float temperature);
+void savePathToFile(coordinate *path, int nCities);
 #endif

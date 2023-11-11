@@ -66,11 +66,9 @@ coordinate *generateRandomCityCoordinates(int nCities){
  * @param title The title to print.
  */
 void printTitle(char *title){
-  printf("%s", RED);
-  printf("----------------------------------------\n");
+  printf("[%s", RED);
   printf("%s", title);
-  printf("\n----------------------------------------\n");
-  printf("%s", RESET);
+  printf("%s]", RESET);
   printf("\n");
 }
 
@@ -150,4 +148,59 @@ void printEpochGeneration(int epoch, float temperature, float energy, int nCitie
   printf("%f", temperature);
   printf("%s}", RESET);
   printf("\n");
+}
+
+void printTerminationConditions(float temperature, int epoch, int Energy, int nCities){
+  printf("Termination conditions Reached.\n");
+  printf("Path Iterations Saved to path.csv ...\n ");
+  printf("Epoch Data Saved to data.csv ...\n");
+  printTitle("Termination Statistics");
+  printf("Final Energy: %s", RED);
+  printf("%d", Energy);
+  printf("%s", RESET);
+  printf("\n");
+  printf("Final Temperature: %s", RED);
+  printf("%f", temperature);
+  printf("%s", RESET);
+  printf("\n");
+  printf("Final Epoch: %s", RED);
+  printf("%d", epoch);
+  printf("%s", RESET);
+  printf("\n");
+}
+
+// file output functions
+/**
+ * Appends the epoch, energy and temperature to a CSV file.
+ * 
+ * @param epoch The current epoch.
+ * @param energy The current energy.
+ * @param temperature The current temperature.
+ */
+void saveEpochToFile(int epoch, float energy, float temperature) {
+  FILE *fptr;
+
+  fptr = fopen("data.csv", "a"); // append mode 
+  // write the epoch, energy and temperature to the file 
+  fprintf(fptr, "%d, %f, %f\n", epoch, energy, temperature);
+
+  fclose(fptr);
+}
+
+/**
+ * appends the given path to a file named "path.csv" in append mode.
+ * Each line in the file contains the x and y coordinates of a city in the path.
+ * 
+ * @param path An array of coordinates representing the path to be saved.
+ * @param nCities The number of cities in the path.
+ */
+void savePathToFile(coordinate *path, int nCities){
+  FILE *fptr;
+  fptr = fopen("path.csv", "a"); // append mode 
+  // write the epoch, energy and temperature to the file 
+  for(int i = 0; i < nCities; i++){
+    fprintf(fptr, "{x:%d, y:%d},", path[i].x, path[i].y);
+  }
+  fprintf(fptr, "\n");
+  fclose(fptr);
 }

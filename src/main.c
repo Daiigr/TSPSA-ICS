@@ -19,13 +19,20 @@
 #include "Path.h"
 #include "Energy.h"
 #include "Temperature.h"
-#include "saveToFile.h"
 
 //macros
 
 #define DEBUG 0
-
-int main(int argc, char *argv[]) {
+// read from command line arguments if debug is enabled and if random or read mode is enabled
+int main(int argc, char *argv[]){
+  if (argc > 1) {
+    if (argv[1][0] == '1') {
+        printf("Debug mode enabled.\n");
+    }
+    if (argv[2][0] == '1') {
+        printf("Random mode enabled.\n");
+    }
+  }
 // get number of cities from user
 int nCities = 0;
 scanf("%d", &nCities);
@@ -38,10 +45,8 @@ float generatedPathEnergy = 0;
 float temperature = initializeTemperature(); 
 int currentEpochIteration = 0;
 
-clearCSVFile(); // clear the csv file
-
 #if DEBUG == 1
-  printcitycoordinates(citycoordinates, nCities); // Print city coordinates.  
+  printCityCoordinates(cityCoordinates, nCities); // Print city coordinates.  
   printPath(currentPath, nCities); // Print path.
 #endif
 
@@ -63,14 +68,10 @@ while(!shouldTerminate(temperature, currentEpochIteration)){
     currentPath = generatedPath;
   } else {
     // if new path is worse, accept it with a probability of $P = e^\frac{e_0 - Etemp}{kT} $
-    //probability is between 1 and 0
-    float probability =  expf((calculatePathEnergy(currentPath, nCities) - calculatePathEnergy(generatedPath, nCities))/temperature);
-    float random = (float)rand()/(float)(RAND_MAX);
-    #if DEBUG == 1
-      printf("New path is worse, accepting it with probability %f.\n", probability);
-      printf("Random number: %f\n", random);
-    #endif
-    if (random < probability) {
+    // can be rewritten as $P = e^\frac{-\Delta E}{kT} $
+    // which can be used to implment a boltzmann distribution
+
+    if (generateProbability(differenceInEnergy(currentPath, generatedPath, nCities), temperature)) {
       #if DEBUG == 1
         printf("Accepted.\n");
       #endif
@@ -95,12 +96,6 @@ while(!shouldTerminate(temperature, currentEpochIteration)){
   temperature = updateTemperature(temperature);
   currentEpochIteration++;
 }
-printf("Termination condition reached.\n");
-printf ("Final path: \n");
-printPath(currentPath, nCities);
-printf("Final energy: %f\n", calculatePathEnergy(currentPath, nCities));
-printf("Final temperature: %f\n", temperature);
-printf("Final epoch: %d\n", currentEpochIteration);
-
+printTerminationConditions(temperature, currentEpochIteration, calculatePathEnergy(currentPath, nCities), nCities);
 return 0;
 }
