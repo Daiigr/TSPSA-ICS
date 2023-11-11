@@ -28,9 +28,9 @@
 float calculatePathEnergy(coordinate *path, int nCities){
   float totalDistance = 0;
   // calculate total distance
-  for (int i = 0; i<nCities; i++) {
+for (int i = 0; i < nCities - 1; i++)  {
     totalDistance += sqrt(((path[i].x-path[i+1].x)*(path[i].x-path[i+1].x)) + ((path[i].y-path[i+1].y)*(path[i].y-path[i+1].y)));
-  }  
+}   
   return totalDistance;
 }
 /**

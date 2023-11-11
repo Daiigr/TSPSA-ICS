@@ -53,10 +53,7 @@ coordinate *generatePathPermuation(coordinate *path, int nCities){
   for (int i = 0; i<nCities; i++) {
     newPath[i] = path[i];
   }
-// random seed 
-  time_t t;
-   /* Intializes random number generator */
-   srand((unsigned) time(&t));
+
   for (int i = 0; i<nCities; i++) {
     int randomIndex1 = rand() % nCities;
     int randomIndex2 = rand() % nCities;

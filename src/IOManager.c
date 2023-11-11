@@ -114,7 +114,11 @@ void printCityCoordinates(coordinate *cityCoordinates, int nCities){
  * @param nCities The number of cities in the path.
  */
 void printPath(coordinate *path, int nCities){
-  printTitle("Path:");
+  if (nCities > 100) {
+    printf("Path is too long to print.\n");
+    return;
+  }
+  printf("Final Path: ");
   printf ("[");
   for(int i = 0; i < nCities; i++){
     printf(" i:%i {x: %s",i,GREEN);
@@ -122,7 +126,7 @@ void printPath(coordinate *path, int nCities){
     printf("%s", RESET);
     printf(", y: %s", GREEN);
     printf("%d", path[i].y);
-    printf("%s}, \n", RESET);
+    printf("%s},", RESET);
   }
   printf("]\n");
 }

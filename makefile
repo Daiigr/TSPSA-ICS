@@ -1,5 +1,6 @@
 CC=gcc
-CFLAGS=-lm
+CFLAGS=
+LDFLAGS=-lm
 DEPS = $(shell find ./src -name "*.h")
 OBJ = $(patsubst %.c, %.o, $(shell find ./src -name "*.c"))
 
@@ -8,7 +9,7 @@ OBJ = $(patsubst %.c, %.o, $(shell find ./src -name "*.c"))
 
 build: $(OBJ)
 	@echo 'building...'
-	@$(CC) -o TSPSA $^ $(CFLAGS)
+	@$(CC) -o TSPSA $^ $(LDFLAGS)
 
 run: build
 	@echo 'running...'

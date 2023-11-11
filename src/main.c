@@ -19,56 +19,78 @@
 #include "Path.h"
 #include "Energy.h"
 #include "Temperature.h"
+#include "saveToFile.h"
+
+//macros
+
+#define DEBUG 0
 
 int main(int argc, char *argv[]) {
 // get number of cities from user
 int nCities = 0;
 scanf("%d", &nCities);
 coordinate *cityCoordinates = generateRandomCityCoordinates(nCities); // Generate random city coordinates.
-
-printCityCoordinates(cityCoordinates, nCities); // Print city coordinates.  
-
 coordinate *currentPath = generateRandomPath(cityCoordinates, nCities); // Generate random path.
-
-printPath(currentPath, nCities); // Print path.
 coordinate *generatedPath = (coordinate *) malloc( nCities * sizeof(coordinate)); // Allocate memory for generated path.
+time_t t;
+srand((unsigned) time(&t));
 float generatedPathEnergy = 0;
 float temperature = initializeTemperature(); 
 int currentEpochIteration = 0;
 
-printf("Beginning simulated annealing...\n");
-printf("Initial temperature: %f\n", temperature);
-printf("Initial Epoch: %d\n", currentEpochIteration);
-printEpochGeneration(currentEpochIteration, temperature, calculatePathEnergy(currentPath, nCities) , nCities);
+clearCSVFile(); // clear the csv file
 
+#if DEBUG == 1
+  printcitycoordinates(citycoordinates, nCities); // Print city coordinates.  
+  printPath(currentPath, nCities); // Print path.
+#endif
+
+printf("Beginning simulated annealing...\n");
+#if DEBUG == 1
+  printEpochGeneration(currentEpochIteration, temperature, calculatePathEnergy(currentPath, nCities) , nCities);
+#endif
 //termination condition: temperature is close to zero
 while(!shouldTerminate(temperature, currentEpochIteration)){
-
   // generate new path permutation
   generatedPath = generatePathPermuation(currentPath, nCities);
-
   // check if new path is better
   if (isEnergyImprovement(currentPath, generatedPath, nCities)) {
     // if new path is better, accept it
-    printf("New path is better, accepting it.\n");
-    printf("Improvement: %f\n", differenceInEnergy(currentPath, generatedPath, nCities));
+    #if DEBUG == 1
+      printf("New path is better, accepting it.\n");
+      printf("Improvement: %f\n", differenceInEnergy(currentPath, generatedPath, nCities));
+    #endif
     currentPath = generatedPath;
   } else {
     // if new path is worse, accept it with a probability of $P = e^\frac{e_0 - Etemp}{kT} $
-// random seed 
-  time_t t;
-   /* Intializes random number generator */
-   srand((unsigned) time(&t));
-    float probability = exp(differenceInEnergy(currentPath, generatedPath, nCities) / temperature);
-    float random = ((float) rand()) / ((float) RAND_MAX);
+    //probability is between 1 and 0
+    float probability =  expf((calculatePathEnergy(currentPath, nCities) - calculatePathEnergy(generatedPath, nCities))/temperature);
+    float random = (float)rand()/(float)(RAND_MAX);
+    #if DEBUG == 1
+      printf("New path is worse, accepting it with probability %f.\n", probability);
+      printf("Random number: %f\n", random);
+    #endif
     if (random < probability) {
+      #if DEBUG == 1
+        printf("Accepted.\n");
+      #endif
       currentPath = generatedPath;
+    } else {
+      #if DEBUG == 1
+        printf("Rejected.\n");
+      #endif
     }
+ 
   }
 
   // print Epoch information 
-  printEpochGeneration(currentEpochIteration, temperature, calculatePathEnergy(currentPath, nCities) , nCities);
-
+  #if DEBUG == 1
+    printEpochGeneration(currentEpochIteration, temperature, calculatePathEnergy(currentPath, nCities) , nCities);
+  #endif
+  // save epoch information to file
+  saveEpochToFile(currentEpochIteration, temperature, calculatePathEnergy(currentPath, nCities));
+  // save path to file
+  savePathToFile(currentPath, nCities);
   // apply cooling schedule
   temperature = updateTemperature(temperature);
   currentEpochIteration++;
