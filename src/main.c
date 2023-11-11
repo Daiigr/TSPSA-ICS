@@ -25,20 +25,27 @@
 #define DEBUG 0
 // read from command line arguments if debug is enabled and if random or read mode is enabled
 int main(int argc, char *argv[]){
+  int nCities = 0;
+  scanf("%d", &nCities);
+  coordinate *cityCoordinates;
+  coordinate *currentPath; 
+  coordinate *generatedPath;
   if (argc > 1) {
-    if (argv[1][0] == '1') {
-        printf("Debug mode enabled.\n");
+    if (argv[1][0] == 'f' || argv[1][0] == 'F') {
+      printf("Reading from file.\n");
+      cityCoordinates = readCityCoordinatesFromFile(nCities);
+    } else if (argv[1][0] == 'r' || argv[1][0] == 'R') {
+      printf("Generating random coordinates.\n");
+      cityCoordinates = generateRandomCityCoordinates(nCities);
+    } else {
+      printf("Invalid argument. Please use either 'f' or 'r'.\n");
+      return 1;
     }
-    if (argv[2][0] == '1') {
-        printf("Random mode enabled.\n");
-    }
+  
   }
 // get number of cities from user
-int nCities = 0;
-scanf("%d", &nCities);
-coordinate *cityCoordinates = generateRandomCityCoordinates(nCities); // Generate random city coordinates.
-coordinate *currentPath = generateRandomPath(cityCoordinates, nCities); // Generate random path.
-coordinate *generatedPath = (coordinate *) malloc( nCities * sizeof(coordinate)); // Allocate memory for generated path.
+currentPath = generateRandomPath(cityCoordinates, nCities); // Generate random path.
+generatedPath = (coordinate *) malloc( nCities * sizeof(coordinate)); // Allocate memory for generated path.
 time_t t;
 srand((unsigned) time(&t));
 float generatedPathEnergy = 0;

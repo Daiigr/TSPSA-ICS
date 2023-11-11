@@ -168,6 +168,24 @@ void printTerminationConditions(float temperature, int epoch, int Energy, int nC
   printf("%s", RESET);
   printf("\n");
 }
+//file input functions
+
+/**
+ * Reads city coordinates from a file.
+ * 
+ * @param nCities The number of cities to read coordinates for.
+ * @return A pointer to an array of coordinates.
+ */
+coordinate *readCityCoordinatesFromFile(int nCities){
+  coordinate *cityCoordinates = (coordinate*)malloc(nCities * sizeof(coordinate));
+  FILE *fptr;
+  fptr = fopen("a.in", "r");
+  for(int i = 0; i < nCities; i++){
+    fscanf(fptr, "%d %d", &cityCoordinates[i].x, &cityCoordinates[i].y);
+  }
+  fclose(fptr);
+  return cityCoordinates;
+}
 
 // file output functions
 /**

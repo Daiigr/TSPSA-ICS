@@ -9,15 +9,25 @@
 #ifndef IOMANAGER_H
 #define IOMANAGER_H
 #include "coordinate.h"
+// input functions from Terminal
 
 coordinate *readCityCoordinates(int nCities);
 coordinate *generateRandomCityCoordinates(int nCities);
+
+// output functions to Terminal
 
 void printCityCoordinates(coordinate  *cityCoordinates, int nCities);
 void printCityDistanceMatrix(int  **distanceMatrix, int nCities);
 void printPath(coordinate *path, int nCities);
 void printEpochGeneration(int epoch, float temperature, float energy, int nCities);
 void printTerminationConditions(float temperature, int epoch, int Energy, int nCities);
+
+// input functions from file
+
+coordinate *readCityCoordinatesFromFile(int nCities);
+
+// output functions to file
+
 void saveEpochToFile(int epoch, float energy, float temperature);
 void savePathToFile(coordinate *path, int nCities);
 #endif
