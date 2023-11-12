@@ -179,7 +179,7 @@ void printTerminationConditions(float temperature, int epoch, int Energy, int nC
 coordinate *readCityCoordinatesFromFile(int nCities, FILE *fptr){
   coordinate *cityCoordinates = (coordinate*)malloc(nCities * sizeof(coordinate));
   for(int i = 0; i < nCities; i++){
-    fscanf(fptr, "%d %d", &cityCoordinates[i].x, &cityCoordinates[i].y);
+    fscanf(fptr, "%d,%d", &cityCoordinates[i].x, &cityCoordinates[i].y);
   }
   fclose(fptr);
   return cityCoordinates;

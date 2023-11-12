@@ -55,8 +55,6 @@ for (int i = 1; i < argc; i++) {
       }
     }
 
-
-
     if(strcmp(argv[i], "-file") == 0 || strcmp(argv[i], "-FILE") == 0){
       FILE *fp; // file pointer
       fp = fopen(argv[i+1], "r"); // open file for reading
