@@ -31,4 +31,5 @@ coordinate *readCityCoordinatesFromFile(int nCities, FILE *fp);
 void saveEpochToFile(int epoch, float energy, float temperature);
 void savePathToFile(coordinate *path, int nCities);
 void saveFinalPathToFile(coordinate *path, int nCities);
+void saveCoordinatesToFile(coordinate *cityCoordinates, int nCities);
 #endif

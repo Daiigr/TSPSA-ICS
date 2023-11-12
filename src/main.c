@@ -71,6 +71,7 @@ for (int i = 1; i < argc; i++) {
     if(strcmp(argv[i], "-random") == 0 || strcmp(argv[i], "-RANDOM") == 0){
       printf("Generating random coordinates.\n");
       cityCoordinates = generateRandomCityCoordinates(nCities);
+      saveCoordinatesToFile(cityCoordinates, nCities);
     }
   }
 

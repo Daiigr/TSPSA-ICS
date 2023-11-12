@@ -20,7 +20,7 @@
 
 
 float updateTemperature(float currentTemperature, float coolingRate){
-  currentTemperature = currentTemperature*0.995;
+  currentTemperature = currentTemperature*coolingRate;
   return currentTemperature;
 }
 

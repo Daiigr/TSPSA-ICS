@@ -1,8 +1,8 @@
 /**
  * @file Path.c
  * @author Daniel Grbac Bravo (d.grbac.bravo@student.rug.nl) 
- * @brief this file contains the functions for the energy of the simulated annealing algorithm
- * @version 1.0
+ * @brief this file contains the functions for the path permuations of the simulated annealing algorithm
+ * @version 6.3 - lost count lol 😭
  * @date 2023-11-10
  */
 
@@ -111,6 +111,17 @@ coordinate  *generateRandomPath(coordinate *cityCoordinates, int nCities){
 }
 
 
+/**
+ * Generates a new path permutation based on the given path and number of cities.
+ * The function randomly picks one of the three different types of path permutations:
+ * 1. Swapping two cities on the path
+ * 2. Inverting a random section on the path
+ * 3. Doing a circular shift on the path
+ * 
+ * @param path The original path
+ * @param nCities The number of cities in the path
+ * @return A new path permutation
+ */
 coordinate *generatePathPermuation(coordinate *path, int nCities){
   coordinate *newPath = (coordinate *) malloc( nCities * sizeof(coordinate));
   // randomly pick one of the 3 different types of path permutations

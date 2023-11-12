@@ -233,6 +233,7 @@ void saveFinalPathToFile(coordinate *path, int nCities){
 }
 
 void saveCoordinatesToFile(coordinate *cityCoordinates, int nCities){
+  printf("Saving coordinates to file.\n");
   FILE *fptr;
   fptr = fopen("coordinates.csv", "w"); // write mode 
   // write the epoch, energy and temperature to the file 
