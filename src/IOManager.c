@@ -154,18 +154,12 @@ void printEpochGeneration(int epoch, float temperature, float energy, int nCitie
 
 void printTerminationConditions(float temperature, int epoch, int Energy, int nCities){
   printf("Termination conditions Reached.\n");
-  printTitle("Termination Statistics");
-  printf("Final Energy: %s", RED);
+  printf("{E_a: %s", GREEN);
   printf("%d", Energy);
   printf("%s", RESET);
-  printf("\n");
-  printf("Final Temperature: %s", RED);
+  printf(", T_a: %s", GREEN);
   printf("%f", temperature);
-  printf("%s", RESET);
-  printf("\n");
-  printf("Final Epoch: %s", RED);
-  printf("%d", epoch);
-  printf("%s", RESET);
+  printf("%s}", RESET);
   printf("\n");
 }
 //file input functions
@@ -242,4 +236,35 @@ void saveCoordinatesToFile(coordinate *cityCoordinates, int nCities){
   }
   fprintf(fptr, "\n");
   fclose(fptr);
+}
+
+#include <sys/ioctl.h> // for ioctl() function
+#include <unistd.h> // for STDOUT_FILENO constant
+
+void updateLoadingBar(int epoch, int nEpochs){
+  // get the terminal width
+  struct winsize w;
+  ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+  int width = w.ws_col;
+  // calculate the percentage of epochs completed
+  float percentage = (float)epoch / (float)nEpochs;
+  int barWidth = width - 20;
+  int progress = (int)(percentage * barWidth);
+  
+  // print the loading bar
+  printf("\r[");
+  for(int i = 0; i < progress; i++){
+    printf("%s", GREEN);
+    printf("=");
+    printf("%s", RESET);
+  }
+  for(int i = progress; i < barWidth; i++){
+    printf(" ");
+  }
+  printf("] %d%%", (int)(percentage * 100));
+  fflush(stdout);
+  // print a new line when the loading bar is complete
+  if(epoch == nEpochs){
+    printf("\n");
+  }
 }

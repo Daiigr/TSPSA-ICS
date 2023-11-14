@@ -32,4 +32,6 @@ void saveEpochToFile(int epoch, float energy, float temperature);
 void savePathToFile(coordinate *path, int nCities);
 void saveFinalPathToFile(coordinate *path, int nCities);
 void saveCoordinatesToFile(coordinate *cityCoordinates, int nCities);
+
+void updateLoadingBar(int epoch , int nEpochs);
 #endif

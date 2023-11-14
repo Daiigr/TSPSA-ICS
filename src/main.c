@@ -24,6 +24,16 @@
 //macros
 
 #define DEBUG 0
+
+int countEpochs(float temperature, float coolingRate){
+  int count = 0;
+  while(temperature > 0.01){
+    temperature = updateTemperature(temperature, coolingRate);
+    count++;
+  }
+  return count;
+}
+
 int main(int argc, char *argv[]){
   int nCities = 0;
   coordinate *cityCoordinates;
@@ -76,31 +86,29 @@ for (int i = 1; i < argc; i++) {
 // get number of cities from user
 currentPath = generateRandomPath(cityCoordinates, nCities); // Generate random path.
 generatedPath = (coordinate *) malloc( nCities * sizeof(coordinate)); // Allocate memory for generated path.
+
+// seed random number generator
 time_t t;
 srand((unsigned) time(&t));
+
 float generatedPathEnergy = 0;
 int currentEpochIteration = 0;
 
-#if DEBUG == 1
-  printCityCoordinates(cityCoordinates, nCities); // Print city coordinates.  
-  printPath(currentPath, nCities); // Print path.
-#endif
-
 printf("Beginning simulated annealing...\n");
-#if DEBUG == 1
-  printEpochGeneration(currentEpochIteration, temperature, calculatePathEnergy(currentPath, nCities) , nCities);
-#endif
+
+
+// calculate number of epochs
+int numOfEpochs = countEpochs(temperature, coolingRate);
+
+
 //termination condition: temperature is close to zero
 while(!shouldTerminate(temperature, currentEpochIteration)){
   // generate new path permutation
   generatedPath = generatePathPermuation(currentPath, nCities);
   // check if new path is better
+  //loading bar
   if (isEnergyImprovement(currentPath, generatedPath, nCities)) {
     // if new path is better, accept it
-    #if DEBUG == 1
-      printf("New path is better, accepting it.\n");
-      printf("Improvement: %f\n", differenceInEnergy(currentPath, generatedPath, nCities));
-    #endif
     currentPath = generatedPath;
   } else {
     // if new path is worse, accept it with a probability of $P = e^\frac{e_0 - Etemp}{kT} $
@@ -108,28 +116,17 @@ while(!shouldTerminate(temperature, currentEpochIteration)){
     // which can be used to implment a boltzmann distribution
 
     if (generateProbability(differenceInEnergy(currentPath, generatedPath, nCities), temperature)) {
-      #if DEBUG == 1
-        printf("Accepted.\n");
-      #endif
       currentPath = generatedPath;
-    } else {
-      #if DEBUG == 1
-        printf("Rejected.\n");
-      #endif
-    }
+    }   
   }
-
   // print Epoch information 
-  #if DEBUG == 1
-    printEpochGeneration(currentEpochIteration, temperature, calculatePathEnergy(currentPath, nCities) , nCities);
-  #endif
-  // save epoch information to file
   saveEpochToFile(currentEpochIteration, temperature, calculatePathEnergy(currentPath, nCities));
   // save path to file
   savePathToFile(currentPath, nCities);
   // apply cooling schedule
   temperature = updateTemperature(temperature, coolingRate);
   currentEpochIteration++;
+  updateLoadingBar(currentEpochIteration, numOfEpochs);
 }
 saveFinalPathToFile(currentPath, nCities);
 printTerminationConditions(temperature, currentEpochIteration, calculatePathEnergy(currentPath, nCities), nCities);
