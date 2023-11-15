@@ -248,7 +248,7 @@ void updateLoadingBar(int epoch, int nEpochs){
   int width = w.ws_col;
   // calculate the percentage of epochs completed
   float percentage = (float)epoch / (float)nEpochs;
-  int barWidth = width - 20;
+  int barWidth = width - 30;
   int progress = (int)(percentage * barWidth);
   
   // print the loading bar
@@ -261,10 +261,16 @@ void updateLoadingBar(int epoch, int nEpochs){
   for(int i = progress; i < barWidth; i++){
     printf(" ");
   }
-  printf("] %d%%", (int)(percentage * 100));
+  printf("] %d%% | EPOCH[%i/%i]", (int)(percentage * 100), epoch, nEpochs);
   fflush(stdout);
   // print a new line when the loading bar is complete
   if(epoch == nEpochs){
     printf("\n");
   }
+}
+
+int calculateRamUsage(int nEpoch, int nCities){
+  // calculate the amount of ram required to store all the path data by calculating the number of GB required to save it to file
+  int ramUsage = (int)(nEpoch * nCities * 2 * sizeof(int) / pow(10, 9));
+  return ramUsage;
 }

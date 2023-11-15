@@ -34,4 +34,5 @@ void saveFinalPathToFile(coordinate *path, int nCities);
 void saveCoordinatesToFile(coordinate *cityCoordinates, int nCities);
 
 void updateLoadingBar(int epoch , int nEpochs);
+int calculateRamUsage(int nEpoch, int nCities);
 #endif

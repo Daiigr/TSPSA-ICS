@@ -41,7 +41,7 @@ int main(int argc, char *argv[]){
   coordinate *generatedPath;
   float temperature = 1000.00; // 1000 by default
   float coolingRate = 0.995; // cooling rate of 0.995 by default
-
+  int noUI = 0;
   // read from command line arguments 
 
 for (int i = 1; i < argc; i++) {
@@ -65,6 +65,7 @@ for (int i = 1; i < argc; i++) {
       }
     }
 
+    // check for the file flag in the argument list
     if(strcmp(argv[i], "-file") == 0 || strcmp(argv[i], "-FILE") == 0){
       FILE *fp; // file pointer
       fp = fopen(argv[i+1], "r"); // open file for reading
@@ -81,6 +82,11 @@ for (int i = 1; i < argc; i++) {
       cityCoordinates = generateRandomCityCoordinates(nCities);
       saveCoordinatesToFile(cityCoordinates, nCities);
     }
+
+    // check for the nui flag which indicates if they want a UI interface to see progress 
+    if(strcmp(argv[i], "-nui") == 0 || strcmp(argv[i], "-NUI") == 0){
+	    noUI = 1;
+    }
   }
 
 // get number of cities from user
@@ -91,8 +97,9 @@ generatedPath = (coordinate *) malloc( nCities * sizeof(coordinate)); // Allocat
 time_t t;
 srand((unsigned) time(&t));
 
-float generatedPathEnergy = 0;
 int currentEpochIteration = 0;
+
+// calculate estimated ram usage
 
 printf("Beginning simulated annealing...\n");
 
@@ -126,7 +133,9 @@ while(!shouldTerminate(temperature, currentEpochIteration)){
   // apply cooling schedule
   temperature = updateTemperature(temperature, coolingRate);
   currentEpochIteration++;
+  if(!noUI){
   updateLoadingBar(currentEpochIteration, numOfEpochs);
+  }
 }
 saveFinalPathToFile(currentPath, nCities);
 printTerminationConditions(temperature, currentEpochIteration, calculatePathEnergy(currentPath, nCities), nCities);
