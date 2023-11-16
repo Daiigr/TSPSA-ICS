@@ -125,7 +125,6 @@ coordinate  *generateRandomPath(coordinate *cityCoordinates, int nCities){
 coordinate *generatePathPermuation(coordinate *path, int nCities){
   coordinate *newPath = (coordinate *) malloc( nCities * sizeof(coordinate));
   // randomly pick one of the 3 different types of path permutations
-
   int randomIndex = rand() % 3;
   if (randomIndex == 0) {
     newPath = swapTwoCitiesOnPath(path, nCities);

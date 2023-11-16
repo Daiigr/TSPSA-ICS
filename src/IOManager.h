@@ -9,20 +9,15 @@
 #ifndef IOMANAGER_H
 #define IOMANAGER_H
 #include "coordinate.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 // input functions from Terminal
 
 coordinate *readCityCoordinates(int nCities);
 coordinate *generateRandomCityCoordinates(int nCities);
 
-// output functions to Terminal
-
-void printCityCoordinates(coordinate  *cityCoordinates, int nCities);
-void printCityDistanceMatrix(int  **distanceMatrix, int nCities);
-void printPath(coordinate *path, int nCities);
-void printEpochGeneration(int epoch, float temperature, float energy, int nCities);
-void printTerminationConditions(float temperature, int epoch, int Energy, int nCities);
-
-// input functions from file
+// output functions from file
 
 coordinate *readCityCoordinatesFromFile(int nCities, FILE *fp);
 
@@ -33,6 +28,9 @@ void savePathToFile(coordinate *path, int nCities);
 void saveFinalPathToFile(coordinate *path, int nCities);
 void saveCoordinatesToFile(coordinate *cityCoordinates, int nCities);
 
-void updateLoadingBar(int epoch , int nEpochs);
-int calculateRamUsage(int nEpoch, int nCities);
+// output functions to terminal
+void printTerminationConditions(float temperature, int epoch, int Energy, int nCities);
+float calculateEpochsPerSecond(clock_t startTime, int epoch);
+clock_t calculateTimeRemaining(clock_t startTime, int epoch, int nEpochs);
+void updateLoadingBar(int epoch, int nEpochs, clock_t timeRemaining, float epochsPerSecond);
 #endif

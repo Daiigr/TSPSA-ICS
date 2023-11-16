@@ -11,6 +11,8 @@
 #include <stdlib.h>
 #include <math.h>
 #include <time.h>
+#include <sys/ioctl.h> // for ioctl() function
+#include <unistd.h> // for STDOUT_FILENO constant
 
 // our custom libraries
 #include "IOManager.h"
@@ -22,11 +24,10 @@
 //color codes for printing
 #define RED "\033[1;31m"
 #define GREEN "\033[1;32m"
+#define YELLOW "\033[1;33m"
 #define RESET "\033[0m"
 
 // input functions
-
-
 
 /**
  * Reads the coordinates of nCities cities from standard input and returns an array of coordinate pointers.
@@ -61,96 +62,6 @@ coordinate *generateRandomCityCoordinates(int nCities){
 }
 
 // output functions
-
-/**
- * Prints a title in red.
- * 
- * @param title The title to print.
- */
-void printTitle(char *title){
-  printf("[%s", RED);
-  printf("%s", title);
-  printf("%s]", RESET);
-  printf("\n");
-}
-
-/**
- * Prints an integer with green color formatting.
- *
- * @param number The integer to be printed.
- */
-void printFormatedInt(int number){
-  printf("%s", GREEN);
-  printf("%d", number);
-  printf("%s", RESET);
-}
-
-/**
- * Prints the coordinates of all cities in the given array.
- * 
- * @param cityCoordinates An array of coordinate structs representing the cities.
- * @param nCities The number of cities in the array.
- */
-void printCityCoordinates(coordinate *cityCoordinates, int nCities){
-
-  printTitle("Node (City) Coordinates:");
-
-  for(int i = 0; i < nCities; i++){
-    printf("{x: %s", GREEN);
-    printf("%d", cityCoordinates[i].x);
-    printf("%s", RESET);
-    printf(", y: %s", GREEN);
-    printf("%d", cityCoordinates[i].y);
-    printf("%s", RESET);
-    printf("}\n");
-  }
-}
-
-
-/**
- * Prints the given path of cities with their coordinates.
- * 
- * @param path An array of coordinates representing the path.
- * @param nCities The number of cities in the path.
- */
-void printPath(coordinate *path, int nCities){
-  if (nCities > 100) {
-    printf("Path is too long to print.\n");
-    return;
-  }
-  printTitle("Path Coordinates");
-  printf ("[");
-  for(int i = 0; i < nCities; i++){
-    printf("{x: %s",GREEN);
-    printf("%d", path[i].x);
-    printf("%s", RESET);
-    printf(", y: %s", GREEN);
-    printf("%d", path[i].y);
-    printf("%s} -> \n", RESET);
-  }
-  printf("]\n");
-}
-
-/**
- * Prints the epoch, temperature, energy and number of cities.
- * 
- * @param epoch The current epoch.
- * @param temperature The current temperature.
- * @param energy The current energy.
- * @param nCities The number of cities.
- */
-void printEpochGeneration(int epoch, float temperature, float energy, int nCities){
-  printf("Epoch: %s", RED);
-  printf("%d -> ", epoch);
-  printf("%s", RESET);
-  printf("{E_a: %s", GREEN);
-  printf("%f", energy);
-  printf("%s", RESET);
-  printf(", T_a: %s", GREEN);
-  printf("%f", temperature);
-  printf("%s}", RESET);
-  printf("\n");
-}
 
 void printTerminationConditions(float temperature, int epoch, int Energy, int nCities){
   printf("Termination conditions Reached.\n");
@@ -189,14 +100,11 @@ coordinate *readCityCoordinatesFromFile(int nCities, FILE *fptr){
  */
 void saveEpochToFile(int epoch, float energy, float temperature) {
   FILE *fptr;
-
   fptr = fopen("data.csv", "a"); // append mode 
   // write the epoch, energy and temperature to the file 
   fprintf(fptr, "%d, %f, %f\n", epoch, energy, temperature);
-
   fclose(fptr);
 }
-
 /**
  * appends the given path to a file named "path.csv" in append mode.
  * Each line in the file contains the x and y coordinates of a city in the path.
@@ -204,9 +112,10 @@ void saveEpochToFile(int epoch, float energy, float temperature) {
  * @param path An array of coordinates representing the path to be saved.
  * @param nCities The number of cities in the path.
  */
+
 void savePathToFile(coordinate *path, int nCities){
-  FILE *fptr;
-  fptr = fopen("path.csv", "a"); // append mode 
+FILE *fptr;
+  fptr = fopen("path.csv", "a");
   // write the epoch, energy and temperature to the file 
   for(int i = 0; i < nCities; i++){
     fprintf(fptr, "%d,%d\n", path[i].x, path[i].y);
@@ -216,8 +125,8 @@ void savePathToFile(coordinate *path, int nCities){
 }
 
 void saveFinalPathToFile(coordinate *path, int nCities){
-  FILE *fptr;
-  fptr = fopen("final.csv", "w"); // write mode 
+FILE *fptr;
+  fptr = fopen("finalPath.csv", "w");
   // write the epoch, energy and temperature to the file 
   for(int i = 0; i < nCities; i++){
     fprintf(fptr, "%d,%d\n", path[i].x, path[i].y);
@@ -238,30 +147,64 @@ void saveCoordinatesToFile(coordinate *cityCoordinates, int nCities){
   fclose(fptr);
 }
 
-#include <sys/ioctl.h> // for ioctl() function
-#include <unistd.h> // for STDOUT_FILENO constant
+clock_t calculateTimeRemaining(clock_t startTime, int epoch, int nEpochs) {
+  clock_t currentTime = clock();
+  double timeElapsed = (double)(currentTime - startTime) / CLOCKS_PER_SEC;
+  double timePerEpoch = timeElapsed / epoch;
+  double totalRemainingTime = timePerEpoch * (nEpochs - epoch);
+  return (clock_t)(totalRemainingTime * CLOCKS_PER_SEC);
+}
 
-void updateLoadingBar(int epoch, int nEpochs){
+float calculateEpochsPerSecond(clock_t startTime, int epoch){
+  clock_t currentTime = clock();
+  clock_t timeElapsed = currentTime - startTime;
+  float epochsPerSecond = (float)epoch / ((float)timeElapsed / CLOCKS_PER_SEC);
+  return epochsPerSecond;
+}
+
+/**
+ * Updates the loading bar in the terminal.
+ * 
+ * @param epoch The current epoch.
+ * @param nEpochs The total number of epochs.
+ * @param timeRemaining The estimated time remaining in seconds.
+ * @param epochsPerSecond The number of epochs per second.
+ */
+void updateLoadingBar(int epoch, int nEpochs, clock_t timeRemaining, float epochsPerSecond){
   // get the terminal width
   struct winsize w;
   ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
   int width = w.ws_col;
   // calculate the percentage of epochs completed
   float percentage = (float)epoch / (float)nEpochs;
-  int barWidth = width - 30;
+  int barWidth = width - 100;
   int progress = (int)(percentage * barWidth);
-  
+
   // print the loading bar
   printf("\r[");
   for(int i = 0; i < progress; i++){
     printf("%s", GREEN);
-    printf("=");
+    printf("#");
     printf("%s", RESET);
   }
   for(int i = progress; i < barWidth; i++){
-    printf(" ");
+    printf("_");
   }
-  printf("] %d%% | EPOCH[%i/%i]", (int)(percentage * 100), epoch, nEpochs);
+  
+  printf("] %s", GREEN);
+  printf(" %d%% | ep[%i/%i]", (int)(percentage * 100), epoch, nEpochs);
+  printf("%s", RESET);  
+  printf(" | %s", YELLOW);
+  // Calculate the proper format for ETA (assuming timeRemaining is now stored in seconds)
+  int hours = timeRemaining / (CLOCKS_PER_SEC * 3600);
+  int minutes = (timeRemaining / CLOCKS_PER_SEC / 60) % 60;
+  int seconds = (timeRemaining / CLOCKS_PER_SEC) % 60;
+  // Printing ETA with formatting for zero padding
+  printf("ETA: %02d:%02d:%02d", hours, minutes, seconds);
+  printf("%s", RESET);  
+  printf(" | %s", RED);
+  printf("eps: %f/s", epochsPerSecond);
+  printf("%s", RESET);
   fflush(stdout);
   // print a new line when the loading bar is complete
   if(epoch == nEpochs){
@@ -269,8 +212,4 @@ void updateLoadingBar(int epoch, int nEpochs){
   }
 }
 
-int calculateRamUsage(int nEpoch, int nCities){
-  // calculate the amount of ram required to store all the path data by calculating the number of GB required to save it to file
-  int ramUsage = (int)(nEpoch * nCities * 2 * sizeof(int) / pow(10, 9));
-  return ramUsage;
-}
+

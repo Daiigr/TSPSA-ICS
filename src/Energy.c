@@ -76,7 +76,7 @@ int isEnergyImprovement(coordinate *currentPath, coordinate *newPath, int nCitie
 int generateProbability(float differenceInEnergy, float temperature){
   float probability = exp(-differenceInEnergy / (CONSTANT * temperature));
   float random = (float)rand() / (float)(RAND_MAX);
-  if (random < probability) {  // here's a small fix as well
+  if (random < probability) {
     return 1;
   }
   return 0;
