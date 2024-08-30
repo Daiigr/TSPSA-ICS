@@ -7,7 +7,7 @@
  */
 
 
-// defult libraries 
+// defult libraries
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -44,14 +44,14 @@ int main(int argc, char *argv[]){
   clock_t startTime = clock();
   int nCities = 0;
   coordinate *cityCoordinates;
-  coordinate *currentPath; 
+  coordinate *currentPath;
   coordinate *generatedPath;
   float temperature = 1000.00; // 1000 by default
   float coolingRate = 0.995; // cooling rate of 0.995 by default
   // flags
   int saveAllPaths = 0;
   int noUI = 0;
-  // read from command line arguments 
+  // read from command line arguments
 
 for (int i = 1; i < argc; i++) {
     // checks -n flag and initializes a specific number of cities (MANDATORY for n > 0)
@@ -63,14 +63,14 @@ for (int i = 1; i < argc; i++) {
     if(strcmp(argv[i], "-t") == 0 || strcmp(argv[i], "-T") == 0){
       if (argv[i+1] != NULL) {
         printf("Flagged Change: Temperature: %f\n", atof(argv[i+1]));
-        temperature = atof(argv[i+1]);   
+        temperature = atof(argv[i+1]);
       }
     }
-    // checks -C flag and initializes a specific cooling rate 
+    // checks -C flag and initializes a specific cooling rate
     if(strcmp(argv[i], "-c") == 0 || strcmp(argv[i], "-C") == 0){
       if (argv[i+1] != NULL) {
         printf("Flagged Change: Cooling Rate: %f\n", atof(argv[i+1]));
-        coolingRate = atof(argv[i+1]);   
+        coolingRate = atof(argv[i+1]);
       }
     }
 
@@ -96,7 +96,7 @@ for (int i = 1; i < argc; i++) {
      printf("Flagged Change: Saving all paths to file.\n");
      saveAllPaths = 1;
     }
-    // check for the nui flag which indicates if they want a UI interface to see progress 
+    // check for the nui flag which indicates if they want a UI interface to see progress
     // this is done because the UI slows down the program  and causes errors in python notebooks
     if(strcmp(argv[i], "-nui") == 0 || strcmp(argv[i], "-NUI") == 0){
       printf("Flagged Change: No UI.\n");
@@ -134,9 +134,9 @@ while(!shouldTerminate(temperature, currentEpochIteration)){
 
     if (generateProbability(differenceInEnergy(currentPath, generatedPath, nCities), temperature)) {
       currentPath = generatedPath;
-    }   
+    }
   }
-  // print Epoch information 
+  // print Epoch information
   saveEpochToFile(currentEpochIteration, temperature, calculatePathEnergy(currentPath, nCities));
   // save path to file
   if(saveAllPaths){
@@ -147,7 +147,10 @@ while(!shouldTerminate(temperature, currentEpochIteration)){
   temperature = updateTemperature(temperature, coolingRate);
   currentEpochIteration++;
 
-  if(!noUI){
+  // % 100 is to prevent it from updating on every itteration otherwise writing to stdout slows down the program too much
+  // recommendation: when running in a script make sure -nui is enabled to maximize EPS
+  // TODO: scale the modulo depending on estimated epochs
+  if(!noUI && currentEpochIteration % 1000 == 0){
   // update loading bar
   clock_t timeRemaining = calculateTimeRemaining(startTime, currentEpochIteration, countEpochs(temperature, coolingRate));
   float epochsPerSecond = calculateEpochsPerSecond(startTime, currentEpochIteration);
@@ -155,9 +158,8 @@ while(!shouldTerminate(temperature, currentEpochIteration)){
   }
 }
 //print total time taken
-printf("Total time taken: %s %f %s seconds\n",GREEN, (double)(clock() - startTime) / CLOCKS_PER_SEC, RESET);
+printf("/nTotal time taken: %s %f %s seconds\n",GREEN, (double)(clock() - startTime) / CLOCKS_PER_SEC, RESET);
 saveFinalPathToFile(currentPath, nCities);
 printTerminationConditions(temperature, currentEpochIteration, calculatePathEnergy(currentPath, nCities), nCities);
 return 0;
 }
-
